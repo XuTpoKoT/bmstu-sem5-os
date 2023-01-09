@@ -1,0 +1,766 @@
+            testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 1
+
+
+				PAGE  59,132
+
+				;€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€
+				;€€					                                 €€
+				;€€				TESTYN	                                 €€
+				;€€					                                 €€
+				;€€      Created:			                                 €€
+				;€€      Version:   1.02		                                 €€
+				;€€      Passes:    5          Analysis	Options on: QRS                  €€
+				;€€					                                 €€
+				;€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€
+
+				.err     Target Assembler set to NONE, re-assembly not recommended
+
+
+				; The following equates show data references outside the range of the program.
+
+     = 7C00			data_52e	equ	7C00h			;*(0040:7C00=0)
+     = 7DFE			data_53e	equ	7DFEh			;*(0040:7DFE=9636h)
+
+				;------------------------------------------------------------  seg_a   ----
+
+				seg_a		segment	      at 40h
+						assume cs:seg_a  , ds:seg_a , ss:stack_seg_b
+
+0040:0000  03F8			rs232_port_1	dw	3F8h			; Data table (indexed access)
+										;  xref 0040:056B
+0040:0002  F8					db	0F8h
+0040:0003  E802			data_1		dw	0E802h			;  xref 0040:053E
+0040:0005  03 E8 02 BC 03 78			db	 03h,0E8h, 02h,0BCh, 03h, 78h
+0040:000B  03					db	 03h
+0040:000C  78					db	78h
+0040:000D  02			data_2		db	2			;  xref 0040:0535
+0040:000E  9FC0			BIOS_data_seg	dw	9FC0h			;  xref 0040:057A, 05A0
+0040:0010  22 C8 00 80 02 00			db	 22h,0C8h, 00h, 80h, 02h, 00h
+0040:0016  00 00				db	 00h, 00h
+0040:0018  00			keybd_flags_2	db	0
+0040:0019  00					db	0
+0040:001A  0024			keybd_q_head	dw	24h			;  xref 0040:0542
+0040:001C  24 00 0D 1C				db	 24h, 00h, 0Dh, 1Ch
+0040:0020  2267			data_3		dw	2267h			;  xref 0040:05AA
+0040:0022  79 15 30 0B 20 39			db	 79h, 15h, 30h, 0Bh, 20h, 39h
+0040:0028  30 0B 30 0B				db	 30h, 0Bh, 30h, 0Bh
+0040:002C  30 0B 30 0B 0D 1C	data_4		db	'0', 0Bh, '0', 0Bh, 0Dh, 1Ch, 'e', 12h	;  xref 7FB1:0024
+0040:0032  65 12
+0040:0034  30 0B 66 21 66 21			db	'0', 0Bh, 'f!f!'
+0040:003A  2166			data_5		dw	2166h			;  xref 7FB1:0011, 7FB1:001A
+0040:003C  66 21 00 00 3E 00			db	 66h, 21h, 00h, 00h, 3Eh, 00h
+0040:0042  C3 00 00 00 00 00			db	0C3h, 00h, 00h, 00h, 00h, 00h
+0040:0048  00 03 50 00 00 10			db	 00h, 03h, 50h, 00h, 00h, 10h
+0040:004E  00 00 4F 18 00 00			db	 00h, 00h, 4Fh, 18h, 00h, 00h
+0040:0054  00 00 00 00 00 00			db	 00h, 00h, 00h, 00h, 00h, 00h
+0040:005A  00 00 00 00 00 00			db	 00h, 00h, 00h, 00h, 00h, 00h
+0040:0060  0F 20 00 D4 03 29			db	 0Fh, 20h, 00h,0D4h, 03h, 29h
+0040:0066  30 00 00 00 00 00			db	 30h, 00h, 00h, 00h, 00h, 00h
+0040:006C  82 6F 14 00 00 00			db	 82h, 6Fh, 14h, 00h, 00h, 00h
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 2
+
+0040:0072  00 00 00 00 C0 00			db	 00h, 00h, 00h, 00h,0C0h, 00h
+0040:0078  14 14 14 00 01 01			db	 14h, 14h, 14h, 00h, 01h, 01h
+0040:007E  01 01 1E 00 3E 00			db	 01h, 01h, 1Eh, 00h, 3Eh, 00h
+0040:0084  18 10 00 60 F9 01			db	 18h, 10h, 00h, 60h,0F9h, 01h
+0040:008A  08 00 00 00 00 00			db	 08h, 00h, 00h, 00h, 00h, 00h
+0040:0090  00 00 00 00 00 00			db	 00h, 00h, 00h, 00h, 00h, 00h
+0040:0096  10 00 00 00 00 00			db	 10h, 00h, 00h, 00h, 00h, 00h
+0040:009C  00 00 00 00 00 00			db	 00h, 00h, 00h, 00h, 00h, 00h
+0040:00A2  00 00 00 00 00 00			db	 00h, 00h, 00h, 00h, 00h, 00h
+0040:00A8  51 55 00 C0				db	 51h, 55h, 00h,0C0h
+0040:00AC  000D[00]				db	13 dup (0)
+0040:00B9  01 00				db	1, 0
+0040:00BB  002F[00]				db	47 dup (0)
+0040:00EA  00			data_8		db	0			;  xref 0040:05B1
+0040:00EB  00 00 00 00 00			db	0, 0, 0, 0, 0
+0040:00F0  0000 0000		data_9		dd	00000h			;  xref 0040:05F2, 05F8
+0040:00F4  001F[00]				db	31 dup (0)
+0040:0113  00			data_10		db	0			;  xref 0040:05C2
+0040:0114  00			data_11		db	0			;  xref 0040:05C9
+0040:0115  0068[00]				db	104 dup (0)
+0040:017D  0000 0000		data_12		dd	00000h			;  xref 0040:054A
+0040:0181  0000 0000		data_13		dd	00000h			;  xref 0040:05FD
+0040:0185  0096[00]				db	150 dup (0)
+0040:021B  BD BE 07 B1 04			db	0BDh,0BEh, 07h,0B1h, 04h
+
+0040:0220			locloop_1:					;  xref 0040:022A
+0040:0220  38 6E 00				cmp	[bp],ch
+0040:0223  7C 09				jl	loc_2			; Jump if <
+0040:0225  75 13				jnz	loc_4			; Jump if not zero
+0040:0227  83 C5 10				add	bp,10h
+0040:022A  E2 F4				loop	locloop_1		; Loop if cx > 0
+
+0040:022C  CD 18				int	18h			; ROM basic
+0040:022E			loc_2:						;  xref 0040:0223
+0040:022E  8B F5				mov	si,bp
+0040:0230			loc_3:						;  xref 0040:0238
+0040:0230  83 C6 10				add	si,10h
+0040:0233  49					dec	cx
+0040:0234  74 19				jz	loc_8			; Jump if zero
+0040:0236  38 2C				cmp	[si],ch
+0040:0238  74 F6				je	loc_3			; Jump if equal
+0040:023A			loc_4:						;  xref 0040:0225
+0040:023A  A0 07B5				mov	al,data_27		; (0040:07B5=0)
+0040:023D			loc_5:						;  xref 0040:0269, 027F, 0292
+0040:023D ˙B4 07				mov	ah,7
+0040:023F  8B F0				mov	si,ax
+0040:0241			loc_6:						;  xref 0040:024D
+0040:0241 ˙AC					lodsb				; String [si] to al
+0040:0242			loc_7:						;  xref 0040:0244
+0040:0242  3C 00				cmp	al,0
+0040:0244  74 FC				je	loc_7			; Jump if equal
+0040:0246  BB 0007				mov	bx,7
+0040:0249  B4 0E				mov	ah,0Eh
+0040:024B  CD 10				int	10h			; Video display   ah=functn 0Eh
+										;  write char al, teletype mode
+0040:024D  EB F2				jmp	short loc_6		; (0241)
+0040:024F			loc_8:						;  xref 0040:0234
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 3
+
+0040:024F  88 4E 10				mov	[bp+10h],cl
+0040:0252  E8 0046				call	sub_1			; (029B)
+0040:0255  73 2A				jnc	loc_11			; Jump if carry=0
+0040:0257			loc_9:						;  xref 0040:028D
+0040:0257  FE 46 10				inc	byte ptr [bp+10h]
+0040:025A  80 7E 04 0B				cmp	byte ptr [bp+4],0Bh
+0040:025E  74 0B				je	loc_10			; Jump if equal
+0040:0260  80 7E 04 0C				cmp	byte ptr [bp+4],0Ch
+0040:0264  74 05				je	loc_10			; Jump if equal
+0040:0266  A0 07B6				mov	al,data_28		; (0040:07B6=4Eh)
+0040:0269  75 D2				jnz	loc_5			; Jump if not zero
+0040:026B			loc_10:						;  xref 0040:025E, 0264
+0040:026B  80 46 02 06				add	byte ptr [bp+2],6
+0040:026F  83 46 08 06				add	word ptr [bp+8],6
+0040:0273  83 56 0A 00				adc	word ptr [bp+0Ah],0
+0040:0277  E8 0021				call	sub_1			; (029B)
+0040:027A  73 05				jnc	loc_11			; Jump if carry=0
+0040:027C  A0 07B6				mov	al,data_28		; (0040:07B6=4Eh)
+0040:027F  EB BC				jmp	short loc_5		; (023D)
+0040:0281			loc_11:						;  xref 0040:0255, 027A
+0040:0281  81 3E 7DFE AA55			cmp	word ptr ds:data_53e,0AA55h	; (0040:7DFE=9636h)
+0040:0287  74 0B				je	loc_12			; Jump if equal
+0040:0289  80 7E 10 00				cmp	byte ptr [bp+10h],0
+0040:028D  74 C8				je	loc_9			; Jump if equal
+0040:028F  A0 07B7				mov	al,data_29		; (0040:07B7=3)
+0040:0292  EB A9				jmp	short loc_5		; (023D)
+0040:0294			loc_12:						;  xref 0040:0287
+0040:0294  8B FC				mov	di,sp
+0040:0296  1E					push	ds
+0040:0297  57					push	di
+0040:0298  8B F5				mov	si,bp
+0040:029A  CB					retf				; Return far
+
+				;ﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂ
+				;                              SUBROUTINE
+				;
+				;         Called from:   0040:0252, 0277
+				;‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹
+
+				sub_1		proc	near
+0040:029B  BF 0005				mov	di,5
+0040:029E  8A 56 00				mov	dl,[bp]
+0040:02A1  B4 08				mov	ah,8
+0040:02A3  CD 13				int	13h			; Disk  dl=drive a  ah=func 08h
+										;  get drive parameters, bl=type
+										;   cx=cylinders, dh=max heads
+										;   es:di= ptr to drive table
+0040:02A5  72 23				jc	loc_13			; Jump if carry Set
+0040:02A7  8A C1				mov	al,cl
+0040:02A9  24 3F				and	al,3Fh			; '?'
+0040:02AB  98					cbw				; Convrt byte to word
+0040:02AC  8A DE				mov	bl,dh
+0040:02AE  8A FC				mov	bh,ah
+0040:02B0  43					inc	bx
+0040:02B1  F7 E3				mul	bx			; dx:ax = reg * ax
+0040:02B3  8B D1				mov	dx,cx
+0040:02B5  86 D6				xchg	dl,dh
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 4
+
+0040:02B7  B1 06				mov	cl,6
+0040:02B9  D2 EE				shr	dh,cl			; Shift w/zeros fill
+0040:02BB  42					inc	dx
+0040:02BC  F7 E2				mul	dx			; dx:ax = reg * ax
+0040:02BE  39 56 0A				cmp	[bp+0Ah],dx
+0040:02C1  77 23				ja	$+25h			; Jump if above
+0040:02C3  72 05				jc	loc_13			; Jump if carry Set
+0040:02C5  39 46 08				cmp	[bp+8],ax
+0040:02C8  73 1C				jae	$+1Eh			; Jump if above or =
+0040:02CA			loc_13:						;  xref 0040:02A5, 02C3, 02E4
+0040:02CA ˙B8 0201				mov	ax,201h
+0040:02CD ˙BB 7C00				mov	bx,data_52e		; (0040:7C00=0)
+0040:02D0  8B 4E 02				mov	cx,[bp+2]
+0040:02D3  8B 56 00				mov	dx,[bp]
+0040:02D6  CD 13				int	13h			; Disk  dl=drive a  ah=func 02h
+										;  read sectors to memory es:bx
+										;   al=#,ch=cyl,cl=sectr,dh=head
+0040:02D8  73 51				jnc	loc_14			; Jump if carry=0
+0040:02DA  4F					dec	di
+0040:02DB  74 4E				jz	loc_14			; Jump if zero
+0040:02DD  32 E4				xor	ah,ah			; Zero register
+0040:02DF  8A 56 00				mov	dl,[bp]
+0040:02E2  CD 13				int	13h			; Disk  dl=drive a  ah=func 00h
+										;  reset disk, al=return status
+0040:02E4  EB E4				jmp	short loc_13		; (02CA)
+							                        ;* No entry point to code
+0040:02E6  8A 56 00				mov	dl,[bp]
+0040:02E9  60 BB AA 55 B4 41			db	 60h,0BBh,0AAh, 55h,0B4h, 41h
+0040:02EF  CD 13 72 36 81 FB			db	0CDh, 13h, 72h, 36h, 81h,0FBh
+0040:02F5  55 AA 75 30 F6 AB			db	 55h,0AAh, 75h, 30h,0F6h,0ABh
+0040:02FB  9F 70 00 0F 06 E9			db	 9Fh, 70h, 00h, 0Fh, 06h,0E9h
+0040:0301  6D 03 A7 00 EA FD			db	 6Dh, 03h,0A7h, 00h,0EAh,0FDh
+0040:0307  02 70 00 00 00 00			db	 02h, 70h, 00h, 00h, 00h, 00h
+0040:030D  FF AF 00 D9 02 87			db	0FFh,0AFh, 00h,0D9h, 02h, 87h
+0040:0313  DB					db	0DBh
+0040:0314  3200			data_16		dw	3200h			;  xref 0040:0492, 04AB, 04B2, 04CD
+0040:0316  20 00 7E 03 A7			db	 20h, 00h, 7Eh, 03h,0A7h
+0040:031B  0007[00]				db	7 dup (0)
+0040:0322  E8 00 36 00 70 00			db	0E8h, 00h, 36h, 00h, 70h, 00h
+0040:0328  13 80 EC				db	 13h, 80h,0ECh
+0040:032B			loc_14:						;  xref 0040:02D8, 02DB
+0040:032B  01 F7				add	di,si
+0040:032D  01 43 4F				add	[bp+di+4Fh],ax
+0040:0330  4E					dec	si
+0040:0331  20 20 20 20 20 48			db	 20h, 20h, 20h, 20h, 20h, 48h
+0040:0337  00 70 00 00 80 EC			db	 00h, 70h, 00h, 00h, 80h,0ECh
+0040:033D  01 18 02				db	 01h, 18h, 02h
+0040:0340  41 55 58 20 20 20			db	'AUX     Z'
+0040:0346  20 20 5A
+0040:0349  00 70 00 C0 A8 EC			db	 00h, 70h, 00h,0C0h,0A8h,0ECh
+0040:034F  01 FC 01				db	 01h,0FCh, 01h
+0040:0352  50 52 4E 20 20 20			db	'PRN     l'
+0040:0358  20 20 6C
+0040:035B  00 70 00 08 80 EC			db	 00h, 70h, 00h, 08h, 80h,0ECh
+0040:0361  01 30 02				db	 01h, 30h, 02h
+0040:0364  43 4C 4F 43 4B 24			db	'CLOCK$'
+0040:036A  20 20 7E				db	'  ~'
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 5
+
+0040:036D  00 70 00 00 80 EC			db	 00h, 70h, 00h, 00h, 80h,0ECh
+0040:0373  01 18 02				db	 01h, 18h, 02h
+0040:0376  43 4F 4D 31 20 20			db	'COM1    '
+0040:037C  20 20
+0040:037E  90 00 70 00 C0 A8			db	 90h, 00h, 70h, 00h,0C0h,0A8h
+0040:0384  EC 01 03 02				db	0ECh, 01h, 03h, 02h
+0040:0388  4C 50 54 31 20 20			db	'LPT1    '
+0040:038E  20 20
+0040:0390  A2 00 70 00 C0 A8			db	0A2h, 00h, 70h, 00h,0C0h,0A8h
+0040:0396  EC 01 0A 02				db	0ECh, 01h, 0Ah, 02h
+0040:039A  4C 50 54 32 20 20			db	'LPT2    '
+0040:03A0  20 20
+0040:03A2  B4 00 70 00 C0 A8			db	0B4h, 00h, 70h, 00h,0C0h,0A8h
+0040:03A8  EC 01 11 02				db	0ECh, 01h, 11h, 02h
+0040:03AC  4C 50 54 33 20 20			db	'LPT3    '
+0040:03B2  20 20
+0040:03B4  C6 00 70 00 00 80			db	0C6h, 00h, 70h, 00h, 00h, 80h
+0040:03BA  EC 01 1E 02				db	0ECh, 01h, 1Eh, 02h
+0040:03BE  43 4F 4D 32 20 20			db	'COM2    '
+0040:03C4  20 20
+0040:03C6  D8 00 70 00 00 80			db	0D8h, 00h, 70h, 00h, 00h, 80h
+0040:03CC  EC 01 24 02				db	0ECh, 01h, 24h, 02h
+0040:03D0  43 4F 4D 33 20 20			db	'COM3    '
+0040:03D6  20 20
+0040:03D8  FF FF 70 00 00 80			db	0FFh,0FFh, 70h, 00h, 00h, 80h
+0040:03DE  EC 01 2A 02				db	0ECh, 01h, 2Ah, 02h
+0040:03E2  43 4F 4D 34 20 20			db	'COM4    '
+0040:03E8  20 20
+0040:03EA  10 22 00 00 C0 15			db	 10h, 22h, 00h, 00h,0C0h, 15h
+0040:03F0  59 F8 00 F0 19 F2			db	 59h,0F8h, 00h,0F0h, 19h,0F2h
+0040:03F6  E6 00 F0 1B 53 FF			db	0E6h, 00h,0F0h, 1Bh, 53h,0FFh
+0040:03FC  00 F0 A9 08 0A 02			db	 00h,0F0h,0A9h, 08h, 0Ah, 02h
+0040:0402  54 02 70 00				db	 54h, 02h, 70h, 00h
+0040:0406			loc_15:
+0040:0406  10 11				adc	[bx+di],dl
+0040:0408  36: 80 00 50				add	byte ptr ss:[bx+si],50h	; 'P'
+0040:040C  00 50 00		;*		add	[bx+si+0],dl
+0040:040C  00 50 00				db	 00h, 50h, 00h
+0040:040F  50 00 50 00 01 02			db	 50h, 00h, 50h, 00h, 01h, 02h
+0040:0415  53 FF 00 F0 08 FF			db	 53h,0FFh, 00h,0F0h, 08h,0FFh
+0040:041B  FF FF FF 09 FF FF			db	0FFh,0FFh,0FFh, 09h,0FFh,0FFh
+0040:0421  FF FF 0A FF 03 0A			db	0FFh,0FFh, 0Ah,0FFh, 03h, 0Ah
+0040:0427  02 0B FF 03 0A 02			db	 02h, 0Bh,0FFh, 03h, 0Ah, 02h
+0040:042D  0C FF 03 0A 02 0D			db	 0Ch,0FFh, 03h, 0Ah, 02h, 0Dh
+0040:0433  FF 03 0A 02 0E B3			db	0FFh, 03h, 0Ah, 02h, 0Eh,0B3h
+0040:0439  07 0A 02 70 A4 0C			db	 07h, 0Ah, 02h, 70h,0A4h, 0Ch
+0040:043F  0A 02 72 B4 06 0A			db	 0Ah, 02h, 72h,0B4h, 06h, 0Ah
+0040:0445  02 73 B4 06 0A 02			db	 02h, 73h,0B4h, 06h, 0Ah, 02h
+0040:044B  74 B4 06 0A 02 76			db	 74h,0B4h, 06h, 0Ah, 02h, 76h
+0040:0451  B4 06 0A 02 77 B4			db	0B4h, 06h, 0Ah, 02h, 77h,0B4h
+0040:0457  06 0A 02				db	 06h, 0Ah, 02h
+0040:045A  000A[00]				db	10 dup (0)
+0040:0464  1F 00 3B 00 5A 00			db	 1Fh, 00h, 3Bh, 00h, 5Ah, 00h
+0040:046A  78 00 97 00 B5 00			db	 78h, 00h, 97h, 00h,0B5h, 00h
+0040:0470  D4 00 F3 00 11 01			db	0D4h, 00h,0F3h, 00h, 11h, 01h
+0040:0476  30 01 4E 01 00 00			db	 30h, 01h, 4Eh, 01h, 00h, 00h
+0040:047C  00 43 00 FF FF 0C			db	 00h, 43h, 00h,0FFh,0FFh, 0Ch
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 6
+
+0040:0482  04 FF FF 2E C6 06			db	 04h,0FFh,0FFh, 2Eh,0C6h, 06h
+0040:0488  0C 00 03				db	 0Ch, 00h, 03h
+0040:048B			loc_16:						;  xref 0040:0565
+0040:048B ˙1E					push	ds
+0040:048C  50					push	ax
+0040:048D  B8 0040				mov	ax,40h
+0040:0490  8E D8				mov	ds,ax
+0040:0492  F7 06 0314 2400			test	data_16,2400h		; (0040:0314=3200h)
+0040:0498  75 4F				jnz	loc_24			; Jump if not zero
+0040:049A  55					push	bp
+0040:049B  8B EC				mov	bp,sp
+0040:049D  8B 46 0A				mov	ax,[bp+0Ah]
+0040:04A0  5D					pop	bp
+0040:04A1  A9 0100				test	ax,100h
+0040:04A4  75 43				jnz	loc_24			; Jump if not zero
+0040:04A6  A9 0200				test	ax,200h
+0040:04A9  74 22				jz	loc_20			; Jump if zero
+0040:04AB  F0> 81 0E 0314 0200	                           lock	or	data_16,200h		; (0040:0314=3200h)
+0040:04B2  F7 06 0314 0003			test	data_16,3		; (0040:0314=3200h)
+0040:04B8  75 2F				jnz	loc_24			; Jump if not zero
+0040:04BA			loc_17:						;  xref 0040:04D4
+0040:04BA ˙86 E0				xchg	ah,al
+0040:04BC  FC					cld				; Clear direction
+0040:04BD  A8 04				test	al,4
+0040:04BF  75 25				jnz	loc_23			; Jump if not zero
+0040:04C1			loc_18:						;  xref 0040:04E7
+0040:04C1 ˙A8 08				test	al,8
+0040:04C3  75 11				jnz	loc_21			; Jump if not zero
+0040:04C5  70 19				jo	loc_22			; Jump if overflow=1
+0040:04C7			loc_19:						;  xref 0040:04D6, 04DE, 04E4
+0040:04C7 ˙9E					sahf				; Store ah into flags
+0040:04C8  58					pop	ax
+0040:04C9  1F					pop	ds
+0040:04CA  CA 0002				retf	2			; Return far
+0040:04CD			loc_20:						;  xref 0040:04A9
+0040:04CD  F0> 81 26 0314 FDFF	                           lock	and	data_16,0FDFFh		; (0040:0314=3200h)
+0040:04D4  EB E4				jmp	short loc_17		; (04BA)
+0040:04D6			loc_21:						;  xref 0040:04C3
+0040:04D6  70 EF				jo	loc_19			; Jump if overflow=1
+0040:04D8  50					push	ax
+0040:04D9  B0 7F				mov	al,7Fh
+0040:04DB  04 02				add	al,2
+0040:04DD  58					pop	ax
+0040:04DE  EB E7				jmp	short loc_19		; (04C7)
+0040:04E0			loc_22:						;  xref 0040:04C5
+0040:04E0  50					push	ax
+0040:04E1  32 C0				xor	al,al			; Zero register
+0040:04E3  58					pop	ax
+0040:04E4  EB E1				jmp	short loc_19		; (04C7)
+0040:04E6			loc_23:						;  xref 0040:04BF
+0040:04E6  FD					std				; Set direction flag
+0040:04E7  EB D8				jmp	short loc_18		; (04C1)
+0040:04E9			loc_24:						;  xref 0040:0498, 04A4, 04B8
+0040:04E9  58					pop	ax
+0040:04EA  1F					pop	ds
+0040:04EB  CF					iret				; Interrupt return
+				sub_1		endp
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 7
+
+
+0040:04EC  2E 89 1E 18 00 2E			db	 2Eh, 89h, 1Eh, 18h, 00h, 2Eh
+0040:04F2  8C 06 1A 00 CB E8			db	 8Ch, 06h, 1Ah, 00h,0CBh,0E8h
+0040:04F8  3B 00 E4 00 E8 36			db	 3Bh, 00h,0E4h, 00h,0E8h, 36h
+0040:04FE  00 FB 00 00 00 E8			db	 00h,0FBh, 00h, 00h, 00h,0E8h
+0040:0504  2F 00 FB 00 00 01			db	 2Fh, 00h,0FBh, 00h, 00h, 01h
+0040:050A  E8 28 00 FB 00 01			db	0E8h, 28h, 00h,0FBh, 00h, 01h
+0040:0510  02 E8 21 00 FB 00			db	 02h,0E8h, 21h, 00h,0FBh, 00h
+0040:0516  02 03 E8 1A 00 30			db	 02h, 03h,0E8h, 1Ah, 00h, 30h
+0040:051C  01 00 E8 14 00 30			db	 01h, 00h,0E8h, 14h, 00h, 30h
+0040:0522  01 01 E8 0E 00 30			db	 01h, 01h,0E8h, 0Eh, 00h, 30h
+0040:0528  01 02 E8 08 00 30			db	 01h, 02h,0E8h, 08h, 00h, 30h
+0040:052E  01 03 E8 02 00 47			db	 01h, 03h,0E8h, 02h, 00h, 47h
+0040:0534  01					db	 01h
+
+				;ﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂ
+				;                              SUBROUTINE
+				;‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹
+
+				sub_2		proc	near
+0040:0535  2E: 80 3E 000D 00			cmp	cs:data_2,0		; (0040:000D=2)
+0040:053B  74 0D				je	loc_25			; Jump if equal
+0040:053D  50					push	ax
+0040:053E  2E: A1 0003				mov	ax,cs:data_1		; (0040:0003=0E802h)
+0040:0542  2E: 39 06 001A			cmp	cs:keybd_q_head,ax	; (0040:001A=24h)
+0040:0547  58					pop	ax
+0040:0548  75 05				jnz	loc_26			; Jump if not zero
+0040:054A			loc_25:						;  xref 0040:053B, 0552
+0040:054A ˙2E: FF 2E 017D			jmp	cs:data_12		; (0040:017D=0)
+0040:054F			loc_26:						;  xref 0040:0548
+0040:054F  E8 001E		;*		call	sub_3			;*(0570)
+0040:054F  E8 1E 00				db	0E8h, 1Eh, 00h
+0040:0552  EB F6				jmp	short loc_25		; (054A)
+				sub_2		endp
+
+							                        ;* No entry point to code
+0040:0554  50					push	ax
+0040:0555  56					push	si
+0040:0556  57					push	di
+0040:0557  55					push	bp
+0040:0558  53					push	bx
+0040:0559  B4 0E				mov	ah,0Eh
+0040:055B  BB 0007				mov	bx,7
+0040:055E  CD 10				int	10h			; Video display   ah=functn 0Eh
+										;  write char al, teletype mode
+0040:0560  5B					pop	bx
+0040:0561  5D					pop	bp
+0040:0562  5F					pop	di
+0040:0563  5E					pop	si
+0040:0564  58					pop	ax
+0040:0565  E9 FF23				jmp	loc_16			; (048B)
+							                        ;* No entry point to code
+0040:0568  90					nop
+0040:0569  00 FF				add	bh,bh
+0040:056B  FF 80 0000				inc	rs232_port_1[bx+si]	; (0040:0000=3F8h)
+0040:056F  00 E8				add	al,ch
+0040:0571  0F			;*		pop	cs			; Dangerous-8088 only
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 8
+
+0040:0571  0F					db	0Fh
+0040:0572  00 74 01				add	[si+1],dh
+0040:0575  C3					retn
+							                        ;* No entry point to code
+0040:0576  50					push	ax
+0040:0577  53					push	bx
+0040:0578  B4 05				mov	ah,5
+0040:057A  2E: FF 1E 000E			call	dword ptr cs:BIOS_data_seg	; (0040:000E=9FC0h)
+0040:057F  5B					pop	bx
+0040:0580  58					pop	ax
+0040:0581  C3					retn
+							                        ;* No entry point to code
+0040:0582  1E					push	ds
+0040:0583  06					push	es
+0040:0584  51					push	cx
+0040:0585  56					push	si
+0040:0586  57					push	di
+0040:0587  2E: C5 36 0268			lds	si,dword ptr cs:[268h]	; (0040:0268=7507h) Load 32 bit ptr
+0040:058C  2E: C4 3E 026C			les	di,dword ptr cs:[26Ch]	; (0040:026C=246h) Load 32 bit ptr
+0040:0591  B9 0008				mov	cx,8
+0040:0594  F3/ A7				repe	cmpsw			; Rep zf=1+cx >0 Cmp [si] to es:[di]
+0040:0596  5F					pop	di
+0040:0597  5E					pop	si
+0040:0598  59					pop	cx
+0040:0599  07					pop	es
+0040:059A  1F					pop	ds
+0040:059B  C3					retn
+							                        ;* No entry point to code
+0040:059C  50					push	ax
+0040:059D  53					push	bx
+0040:059E  B4 06				mov	ah,6
+0040:05A0  2E: FF 1E 000E			call	dword ptr cs:BIOS_data_seg	; (0040:000E=9FC0h)
+0040:05A5  5B					pop	bx
+0040:05A6  58					pop	ax
+0040:05A7  C3					retn
+							                        ;* No entry point to code
+0040:05A8  0E					push	cs
+0040:05A9  1F					pop	ds
+0040:05AA  8E 06 0020				mov	es,data_3		; (0040:0020=2267h)
+0040:05AE  B9 0004				mov	cx,4
+0040:05B1 ˙BE 00EA				mov	si,offset data_8	; (0040:00EA=0)
+
+0040:05B4			locloop_27:					;  xref 0040:05C0
+0040:05B4  AC					lodsb				; String [si] to al
+0040:05B5  98					cbw				; Convrt byte to word
+0040:05B6  D1 E0				shl	ax,1			; Shift w/zeros fill
+0040:05B8  D1 E0				shl	ax,1			; Shift w/zeros fill
+0040:05BA  8B F8				mov	di,ax
+0040:05BC  AD					lodsw				; String [si] to ax
+0040:05BD  AB					stosw				; Store ax to es:[di]
+0040:05BE  AD					lodsw				; String [si] to ax
+0040:05BF  AB					stosw				; Store ax to es:[di]
+0040:05C0  E2 F2				loop	locloop_27		; Loop if cx > 0
+
+0040:05C2  80 3E 0113 00			cmp	data_10,0		; (0040:0113=0)
+0040:05C7  74 22				je	loc_30			; Jump if equal
+0040:05C9 ˙BE 0114				mov	si,offset data_11	; (0040:0114=0)
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 9
+
+0040:05CC  B9 000E				mov	cx,0Eh
+
+0040:05CF			locloop_28:					;  xref 0040:05E9
+0040:05CF  AC					lodsb				; String [si] to al
+0040:05D0  98					cbw				; Convrt byte to word
+0040:05D1  8B F8				mov	di,ax
+0040:05D3  AD					lodsw				; String [si] to ax
+0040:05D4  8B D8				mov	bx,ax
+0040:05D6  AD					lodsw				; String [si] to ax
+0040:05D7  83 FB FF				cmp	bx,0FFFFh
+0040:05DA  74 0D				je	loc_29			; Jump if equal
+0040:05DC  3D FFFF				cmp	ax,0FFFFh
+0040:05DF  74 08				je	loc_29			; Jump if equal
+0040:05E1  03 FF				add	di,di
+0040:05E3  03 FF				add	di,di
+0040:05E5  93					xchg	bx,ax
+0040:05E6  AB					stosw				; Store ax to es:[di]
+0040:05E7  93					xchg	bx,ax
+0040:05E8  AB					stosw				; Store ax to es:[di]
+0040:05E9			loc_29:						;  xref 0040:05DA, 05DF
+0040:05E9  E2 E4				loop	locloop_28		; Loop if cx > 0
+
+0040:05EB			loc_30:						;  xref 0040:05C7
+0040:05EB  CD 19				int	19h			; Bootstrap loader
+0040:05ED  3D 4F53				cmp	ax,4F53h
+0040:05F0  74 05				je	loc_31			; Jump if equal
+0040:05F2  2E: FF 2E 00F0			jmp	cs:data_9		; (0040:00F0=0)
+0040:05F7			loc_31:						;  xref 0040:05F0
+0040:05F7  F9					stc				; Set carry flag
+0040:05F8  2E: FF 2E 00F0			jmp	cs:data_9		; (0040:00F0=0)
+							                        ;* No entry point to code
+0040:05FD  2E: FF 2E 0181			jmp	cs:data_13		; (0040:0181=0)
+0040:0602  CB 03 00				db	0CBh, 03h, 00h
+0040:0605  000C[00]				db	12 dup (0)
+0040:0611  15 03 70 00 00 00			db	 15h, 03h, 70h, 00h, 00h, 00h
+0040:0617  50 00 02 00 0E 00			db	 50h, 00h, 02h, 00h, 0Eh, 00h
+0040:061D  50 00 14 00 0C 00			db	 50h, 00h, 14h, 00h, 0Ch, 00h
+0040:0623  70 00 01 00 10 00			db	 70h, 00h, 01h, 00h, 10h, 00h
+0040:0629  8F 03 02 00 00 00			db	 8Fh, 03h, 02h, 00h, 00h, 00h
+0040:062F  C0 03 C8 04 00 00			db	0C0h, 03h,0C8h, 04h, 00h, 00h
+0040:0635  00 00 00 57 06 53			db	 00h, 00h, 00h, 57h, 06h, 53h
+0040:063B  50 33 FF 8E C7 BB			db	 50h, 33h,0FFh, 8Eh,0C7h,0BBh
+0040:0641  15 00 B8 84 16 CD			db	 15h, 00h,0B8h, 84h, 16h,0CDh
+0040:0647  2F 8C C0 0B C7 74			db	 2Fh, 8Ch,0C0h, 0Bh,0C7h, 74h
+0040:064D  0B 0E B8 59 03 50			db	 0Bh, 0Eh,0B8h, 59h, 03h, 50h
+0040:0653  06 57 B8 01 00 CB			db	 06h, 57h,0B8h, 01h, 00h,0CBh
+0040:0659  58 5B 07 5F CB 00			db	 58h, 5Bh, 07h, 5Fh,0CBh, 00h
+0040:065F  65 9F 0B FB 8D 00			db	 65h, 9Fh, 0Bh,0FBh, 8Dh, 00h
+0040:0665  000F[00]				db	15 dup (0)
+0040:0674  01 00				db	1, 0
+0040:0676  000E[00]				db	14 dup (0)
+0040:0684  FF FF FF FF A9 26			db	0FFh,0FFh,0FFh,0FFh,0A9h, 26h
+0040:068A  03 00 01 00 FF FF			db	 03h, 00h, 01h, 00h,0FFh,0FFh
+0040:0690  FF FF 00 00 08 02			db	0FFh,0FFh, 00h, 00h, 08h, 02h
+0040:0696  EC 15 A7 00 CE 00			db	0ECh, 15h,0A7h, 00h,0CEh, 00h
+0040:069C  A7 00 5A 00 70 00			db	0A7h, 00h, 5Ah, 00h, 70h, 00h
+0040:06A2  24 00 70 00 80 00			db	 24h, 00h, 70h, 00h, 80h, 00h
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 10
+
+0040:06A8  00 00 00 00 00 00			db	 00h, 00h, 00h, 00h, 00h, 00h
+0040:06AE  7C 03 00 00 72 03			db	 7Ch, 03h, 00h, 00h, 72h, 03h
+0040:06B4  00 00 04 04 00 00			db	 00h, 00h, 04h, 04h, 00h, 00h
+0040:06BA  D9 02 04 80 C6 0D			db	0D9h, 02h, 04h, 80h,0C6h, 0Dh
+0040:06C0  CC					db	0CCh
+0040:06C1  0D 4E 55 4C 20 20			db	0Dh, 'NUL     '
+0040:06C7  20 20 20
+0040:06CA  0007[00]				db	7 dup (0)
+0040:06D1  C5 73 C2 06 00 00			db	0C5h, 73h,0C2h, 06h, 00h, 00h
+0040:06D7  00 00 03 01 00 04			db	 00h, 00h, 03h, 01h, 00h, 04h
+0040:06DD  00					db	 00h
+0040:06DE  0013[00]				db	19 dup (0)
+0040:06F1  FF FF 00 00 00 00			db	0FFh,0FFh, 00h, 00h, 00h, 00h
+0040:06F7  10 00 00 20 34 FF			db	 10h, 00h, 00h, 20h, 34h,0FFh
+0040:06FD  9F 08 02 84 14 D3			db	 9Fh, 08h, 02h, 84h, 14h,0D3h
+0040:0703  28 2E FE D7 28 2E			db	 28h, 2Eh,0FEh,0D7h, 28h, 2Eh
+0040:0709  FE D7 28 2E FE D3			db	0FEh,0D7h, 28h, 2Eh,0FEh,0D3h
+0040:070F  28 2E FE D3 28 2E			db	 28h, 2Eh,0FEh,0D3h, 28h, 2Eh
+0040:0715  FE D3 28 2E FE D3			db	0FEh,0D3h, 28h, 2Eh,0FEh,0D3h
+0040:071B  28 2E FE D3 28 2E			db	 28h, 2Eh,0FEh,0D3h, 28h, 2Eh
+0040:0721  FE D7 28 2E FE D3			db	0FEh,0D7h, 28h, 2Eh,0FEh,0D3h
+0040:0727  28 2E FE D3 28 2E			db	 28h, 2Eh,0FEh,0D3h, 28h, 2Eh
+0040:072D  FE D3 28 2E FE D7			db	0FEh,0D3h, 28h, 2Eh,0FEh,0D7h
+0040:0733  28 2E FE D3 28 2E			db	 28h, 2Eh,0FEh,0D3h, 28h, 2Eh
+0040:0739  FE D3 28 2E FE 00			db	0FEh,0D3h, 28h, 2Eh,0FEh, 00h
+0040:073F  00 28 03 05 00 06			db	 00h, 28h, 03h, 05h, 00h, 06h
+0040:0745  00 02 00 00 C0 00			db	 00h, 02h, 00h, 00h,0C0h, 00h
+0040:074B  36 00				db	 36h, 00h
+0040:074D  70					db	70h
+0040:074E  0011[00]				db	17 dup (0)
+0040:075F  EB 8D 00 00 00 00			db	0EBh, 8Dh, 00h, 00h, 00h, 00h
+0040:0765  13 00 02 00 00 D3			db	 13h, 00h, 02h, 00h, 00h,0D3h
+0040:076B  00 24 00 70 00			db	 00h, 24h, 00h, 70h, 00h
+0040:0770  0010[00]				db	16 dup (0)
+0040:0780  EB 8D 58 00 00 00			db	0EBh, 8Dh, 58h, 00h, 00h, 00h
+0040:0786  06 00 01 00 00 C0			db	 06h, 00h, 01h, 00h, 00h,0C0h
+0040:078C  00 48 00 70 00			db	 00h, 48h, 00h, 70h, 00h
+0040:0791  0010[00]				db	16 dup (0)
+0040:07A1  EB 8D 00 00 00 00			db	0EBh, 8Dh, 00h, 00h, 00h, 00h
+0040:07A7  01 00 00 00 00 02			db	 01h, 00h, 00h, 00h, 00h, 02h
+0040:07AD  0008[00]				db	8 dup (0)
+0040:07B5  00			data_27		db	0			;  xref 0040:023A
+0040:07B6  4E			data_28		db	4Eh			;  xref 0040:0266, 027C
+0040:07B7  03			data_29		db	3			;  xref 0040:028F
+0040:07B8  00 00 4E 03 00 00			db	 00h, 00h, 4Eh, 03h, 00h, 00h
+0040:07BE  00 00 00 00 C2 06			db	 00h, 00h, 00h, 00h,0C2h, 06h
+0040:07C4  AC					db	0ACh
+0040:07C5  0008[00]				db	8 dup (0)
+0040:07CD  02 00				db	2, 0
+0040:07CF  0008[00]				db	8 dup (0)
+0040:07D7  D3 6A 00				db	0D3h, 6Ah, 00h
+0040:07DA  0009[00]				db	9 dup (0)
+0040:07E3  C2 06 B0				db	0C2h, 06h,0B0h
+0040:07E6  0085[00]				db	133 dup (0)
+0040:086B  18 00				db	 18h, 00h
+0040:086D  0105[00]				db	261 dup (0)
+0040:0972  1B 2F 00 00 01 20			db	 1Bh, 2Fh, 00h, 00h, 01h, 20h
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 11
+
+0040:0978  000F[20]				db	15 dup (20h)
+0040:0987  0E 0D 0E 0D 0E 0D			db	 0Eh, 0Dh, 0Eh, 0Dh, 0Eh, 0Dh
+0040:098D  0E 0D 00 00 90 00			db	 0Eh, 0Dh, 00h, 00h, 90h, 00h
+0040:0993  00 FF 01 02 00 03			db	 00h,0FFh, 01h, 02h, 00h, 03h
+0040:0999  08 00 00 00 00 55			db	 08h, 00h, 00h, 00h, 00h, 55h
+0040:099F  43 79 1E C2 06 00			db	 43h, 79h, 1Eh,0C2h, 06h, 00h
+0040:09A5  00 00 03 02 00 00			db	 00h, 00h, 03h, 02h, 00h, 00h
+0040:09AB  00 20 40 C2 06 00			db	 00h, 20h, 40h,0C2h, 06h, 00h
+0040:09B1  00 C1 06 C1 06 C1			db	 00h,0C1h, 06h,0C1h, 06h,0C1h
+0040:09B7  06 FF 9F 00 00 00			db	 06h,0FFh, 9Fh, 00h, 00h, 00h
+0040:09BD  00 00 00 01 90 00			db	 00h, 00h, 00h, 01h, 90h, 00h
+0040:09C3  00 00 00 FF FF 00			db	 00h, 00h, 00h,0FFh,0FFh, 00h
+0040:09C9  00 00 00 0D 00 0D			db	 00h, 00h, 00h, 0Dh, 00h, 0Dh
+0040:09CF  00 01				db	 00h, 01h
+0040:09D1  0019[00]				db	25 dup (0)
+0040:09EA  F7 01 70 00 0E 00			db	0F7h, 01h, 70h, 00h, 0Eh, 00h
+0040:09F0  05 30 03				db	 05h, 30h, 03h
+0040:09F3  0009[00]				db	9 dup (0)
+0040:09FC  D0 03 A7 00 01 00			db	0D0h, 03h,0A7h, 00h, 01h, 00h
+0040:0A02  00 00 0E 00 05 30			db	 00h, 00h, 0Eh, 00h, 05h, 30h
+0040:0A08  03					db	 03h
+0040:0A09  0009[00]				db	9 dup (0)
+0040:0A12  D0 03 A7 00 01			db	0D0h, 03h,0A7h, 00h, 01h
+0040:0A17  000C[00]				db	12 dup (0)
+0040:0A23  FF FF FF FF 00 00			db	0FFh,0FFh,0FFh,0FFh, 00h, 00h
+0040:0A29  00 00 00 00				db	 00h, 00h, 00h, 00h
+0040:0A2D  20					db	20h
+0040:0A2E  0007[20]				db	7 dup (20h)
+0040:0A35  90 00 00 00 FF			db	 90h, 00h, 00h, 00h,0FFh
+0040:0A3A  0007[00]				db	7 dup (0)
+0040:0A41  01 43 3A				db	 01h, 43h, 3Ah
+0040:0A44  5C 44 4F 43 55 4D			db	'\DOCUME~1\RAMA\0016~1\8743~1\TES'
+0040:0A4A  45 7E 31 5C 52 41
+0040:0A50  4D 41 5C 30 30 31
+0040:0A56  36 7E 31 5C 38 37
+0040:0A5C  34 33 7E 31 5C 54
+0040:0A62  45 53
+0040:0A64  54 59 4E 2E 4C 53			db	'TYN.LST'
+0040:0A6A  54
+0040:0A6B  0153[00]				db	339 dup (0)
+0040:0BBE  54 45 53 54 59 4E			db	'TESTYN  LST'
+0040:0BC4  20 20 4C 53 54
+0040:0BC9  0018[00]				db	24 dup (0)
+0040:0BE1  01 00 00 FF				db	 01h, 00h, 00h,0FFh
+0040:0BE5  0008[00]				db	8 dup (0)
+0040:0BED  FF 00 03 00 00 25			db	0FFh, 00h, 03h, 00h, 00h, 25h
+0040:0BF3  06 B4 95 FA 05 0E			db	 06h,0B4h, 95h,0FAh, 05h, 0Eh
+0040:0BF9  04					db	 04h
+0040:0BFA  0012[00]				db	18 dup (0)
+0040:0C0C  48 00 70 00 58 01			db	 48h, 00h, 70h, 00h, 58h, 01h
+0040:0C12  A7 00 8E 00 7C 03			db	0A7h, 00h, 8Eh, 00h, 7Ch, 03h
+0040:0C18  00 00 00 00 FF FF			db	 00h, 00h, 00h, 00h,0FFh,0FFh
+0040:0C1E  06 00 1E 00 C2 06			db	 06h, 00h, 1Eh, 00h,0C2h, 06h
+0040:0C24  D2 03 00 00 F1 03			db	0D2h, 03h, 00h, 00h,0F1h, 03h
+0040:0C2A  00					db	 00h
+0040:0C2B  0031[00]				db	49 dup (0)
+0040:0C5C  20 39 79 1E 21 4C			db	 20h, 39h, 79h, 1Eh, 21h, 4Ch
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 12
+
+0040:0C62  0E 04 FA 05 00 00			db	 0Eh, 04h,0FAh, 05h, 00h, 00h
+0040:0C68  001A[00]				db	26 dup (0)
+0040:0C82  0F					db	0Fh
+0040:0C83  0171[00]				db	369 dup (0)
+0040:0DF4  46 00 40 00 46 00			db	 46h, 00h, 40h, 00h, 46h, 00h
+0040:0DFA  40 00 A8 07 46 14			db	 40h, 00h,0A8h, 07h, 46h, 14h
+0040:0E00  40 02 40 02 40 00			db	 40h, 02h, 40h, 02h, 40h, 00h
+0040:0E06  21 54 2E FE 02 02			db	 21h, 54h, 2Eh,0FEh, 02h, 02h
+0040:0E0C  20 40 C2 06 1F			db	 20h, 40h,0C2h, 06h, 1Fh
+0040:0E11  26					db	26h
+0040:0E12  0115[00]				db	277 dup (0)
+0040:0F27  70 00 33 0B 44 4F			db	 70h, 00h, 33h, 0Bh, 44h, 4Fh
+0040:0F2D  00 20 D4 03 86 4E			db	 00h, 20h,0D4h, 03h, 86h, 4Eh
+0040:0F33  00 00 00 00 1F 6A			db	 00h, 00h, 00h, 00h, 1Fh, 6Ah
+0040:0F39  58 04 F1 03 A7 00			db	 58h, 04h,0F1h, 03h,0A7h, 00h
+0040:0F3F  FA 31 79 1E 54 45			db	0FAh, 31h, 79h, 1Eh, 54h, 45h
+0040:0F45  53 54 59 4E 00 00			db	 53h, 54h, 59h, 4Eh, 00h, 00h
+0040:0F4B  EB 01 A1 63 00 00			db	0EBh, 01h,0A1h, 63h, 00h, 00h
+0040:0F51  00 00 E4 00 A1 63			db	 00h, 00h,0E4h, 00h,0A1h, 63h
+0040:0F57  09 5B 7C 02 7C 01			db	 09h, 5Bh, 7Ch, 02h, 7Ch, 01h
+0040:0F5D  09 33 0B 44 4F 95			db	 09h, 33h, 0Bh, 44h, 4Fh, 95h
+0040:0F63  4F 40 00 45 05 22			db	 4Fh, 40h, 00h, 45h, 05h, 22h
+0040:0F69  00 33 07 44 05 46			db	 00h, 33h, 07h, 44h, 05h, 46h
+0040:0F6F  00 40 00 46 00 40			db	 00h, 40h, 00h, 46h, 00h, 40h
+0040:0F75  00 A8 07 0B 00 0F			db	 00h,0A8h, 07h, 0Bh, 00h, 0Fh
+0040:0F7B  00 0F 00 4A 21 00			db	 00h, 0Fh, 00h, 4Ah, 21h, 00h
+0040:0F81  00 61 21 00 00 BD			db	 00h, 61h, 21h, 00h, 00h,0BDh
+0040:0F87  7D 06 00 38 2D 41			db	 7Dh, 06h, 00h, 38h, 2Dh, 41h
+0040:0F8D  00 46 1E AC				db	 00h, 46h, 1Eh,0ACh
+0040:0F91  26					db	26h
+0040:0F92  006E[00]				db	110 dup (0)
+
+				seg_a		ends
+
+
+
+				;------------------------------------------------------  stack_seg_b   ----
+
+				stack_seg_b	segment	word stack 'STACK'
+
+7FA5:0000  00C0[00]				db	192 dup (0)
+
+				stack_seg_b	ends
+
+
+
+				;------------------------------------------------------------  seg_c   ----
+
+				seg_c		segment	byte public
+						assume cs:seg_c  , ds:seg_a , ss:stack_seg_b
+
+7FB1:0000  0E 1F FA 8B 16 38			db	 0Eh, 1Fh,0FAh, 8Bh, 16h, 38h
+7FB1:0006  00 EC 24 FE 8B 1E			db	 00h,0ECh, 24h,0FEh, 8Bh, 1Eh
+7FB1:000C  3C 00				db	 3Ch, 00h
+7FB1:000E			loc_32:						;  xref 7FB1:0021
+7FB1:000E  0C 02				or	al,2
+7FB1:0010  EE					out	dx,al			; port 0, DMA-1 bas&add ch 0
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 13
+
+7FB1:0011  8B 0E 003A				mov	cx,data_5		; (0040:003A=2166h)
+
+7FB1:0015			locloop_33:					;  xref 7FB1:0015
+7FB1:0015  E2 FE				loop	locloop_33		; Loop if cx > 0
+
+7FB1:0017  24 FD				and	al,0FDh
+7FB1:0019  EE					out	dx,al			; port 0, DMA-1 bas&add ch 0
+7FB1:001A  8B 0E 003A				mov	cx,data_5		; (0040:003A=2166h)
+
+7FB1:001E			locloop_34:					;  xref 7FB1:001E
+7FB1:001E  E2 FE				loop	locloop_34		; Loop if cx > 0
+
+7FB1:0020  4B					dec	bx
+7FB1:0021  75 EB				jnz	loc_32			; Jump if not zero
+7FB1:0023  FB					sti				; Enable interrupts
+7FB1:0024 ˙BA 002C				mov	dx,offset data_4	; (0040:002C='0 0 ')
+7FB1:0027  B4 09				mov	ah,9
+7FB1:0029  CD 21				int	21h			; DOS Services  ah=function 09h
+										;  display char string at ds:dx
+7FB1:002B  CB					retf				; Return far
+7FB1:002C  59 65 73 20 6F 72			db	'Yes or No ?$'
+7FB1:0032  20 4E 6F 20 3F 24
+7FB1:0038  61					db	'a'
+7FB1:0039  00 64 00 50 00			db	 00h, 64h, 00h, 50h, 00h
+
+				seg_c		ends
+
+
+
+						end	start
+           testyn.lst      TESTYN v1.02(c) 1988 V Communica	Sourcer	v5.10   11-Sep-22   8:25 pm   Page 14
+
+
+				±±±±±±±±±±±±±±±±±±±± CROSS REFERENCE - KEY ENTRY POINTS ±±±±±±±±±±±±±±±±±±±
+
+				    seg:off    type	   label
+				   ---- ----   ----   --------------------------------
+				   7FA0:0000   far    start
+
+				 ±±±±±±±±±±±±±±±±±± Interrupt Usage Synopsis ±±±±±±±±±±±±±±±±±±
+
+				        Interrupt 10h : Video display	ah=functn xxh
+				        Interrupt 10h :  ah=0Eh	 write char al, teletype mode
+				        Interrupt 13h : Disk  dl=drive #  ah=func xxh
+				        Interrupt 13h :  ah=00h	 reset disk, al=return status
+				        Interrupt 13h :  ah=02h	 read sectors to memory es:bx
+				        Interrupt 13h :  ah=08h	 get drive parameters, bl=type
+				        Interrupt 18h : ROM basic
+				        Interrupt 19h : Bootstrap loader
+				        Interrupt 21h : DOS Services  ah=function xxh
+				        Interrupt 21h :  ah=09h	 display char string at ds:dx
+
+				 ±±±±±±±±±±±±±±±±±± I/O Port Usage Synopsis  ±±±±±±±±±±±±±±±±±±
+
+				        Port 0     : DMA-1 bas&add ch 0
+

@@ -1,0 +1,16 @@
+*.aux
+*.out
+*.bst
+*.gz
+*.log
+*.blg
+*.bbl
+*.toc
+*.synctex*
+
+*.o
+cmake-build-debug/
+main
+
+*.drawio
+*.idea
