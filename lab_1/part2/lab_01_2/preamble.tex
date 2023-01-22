@@ -1,0 +1,73 @@
+\usepackage{pdfpages}
+
+\setenumerate[0]{label=\arabic*)}
+\newcommand{\code}[1]{\texttt{#1}}
+
+\renewcommand{\labelitemi}{---}
+
+\usepackage{multirow}
+\usepackage{makecell}
+
+% Команда для римских цифр
+\newcommand{\rom}[1]{\MakeUppercase{\romannumeral #1}}
+
+\usepackage{geometry}
+\geometry{left=30mm}
+\geometry{right=15mm}
+\geometry{top=20mm}
+\geometry{bottom=20mm}
+
+\captionsetup[table]{justification=raggedright,singlelinecheck=off} % Изменение подписей к таблицам
+
+\setlength{\parindent}{1.25cm}
+\usepackage[ddmmyyyy]{datetime} % Определяем формат данных для \today
+\renewcommand{\dateseparator}{.} % Определяем сепаратор между единицами времени
+
+\usepackage{graphicx}
+\newcommand{\img}[3] {
+	\begin{figure}[H]
+		\center{\includegraphics[height=#1]{assets/img/#2}}
+		\caption{#3}
+		\label{img:#2}
+	\end{figure}
+}
+\newcommand{\boximg}[3] {
+	\begin{figure}[h]
+		\center{\fbox{\includegraphics[height=#1]{assets/img/#2}}}
+		\caption{#3}
+		\label{img:#2}
+	\end{figure}
+}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={const. let, export, interface, typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{ %
+	language=JavaScript,   					% выбор языка для подсветки	
+	basicstyle=\small\sffamily,			% размер и начертание шрифта для подсветки кода
+	numbers=left,						% где поставить нумерацию строк (слева\справа)
+	stepnumber=1,						% размер шага между двумя номерами строк
+	numbersep=5pt,						% как далеко отстоят номера строк от подсвечиваемого кода
+	frame=single,						% рисовать рамку вокруг кода
+	tabsize=4,							% размер табуляции по умолчанию равен 4 пробелам
+	captionpos=t,						% позиция заголовка вверху [t] или внизу [b]
+	breaklines=true,					
+	breakatwhitespace=true,				% переносить строки только если есть пробел
+	escapeinside={\#*}{*)},				% если нужно добавить комментарии в коде
+	backgroundcolor=\color{white},
+}
