@@ -1,0 +1,162 @@
+\chapter{Мониторы}
+Проблемы семафоров решают мониторы. Это средства более высокого уровня, чем примитивы ядра.
+
+Примитив -- низкоуровневые средства, предоставляемые в распоряжение процессов.
+
+NB! команда test\_and\_set
+Команды lock -- unlock
+		wait -- post
+		wait -- signal
+		
+Идея монитора -- унификация взяимодействия процессов. Монитор может быть реализован в ОС или в библиотеке языка (например, Cuncurrent Pascal)
+
+Монитор -- это набор процедур и данных (монитор защищает свои данные, т.к. к ним можно обратиться только через процедуры). Пр-с, вызвавший процедуру, наз. процессом, находящимся в мониторе. Процедура может одновременно использовать только один процесс. Остальные рпоцессы ставятся к очередь к монитору.
+
+Обычно монитор оперирует переменными типа Conditional (событие) c помощью ф-й wait (блокировка) и signal (разблокировка).
+
+Виды мониторов:
+\begin{itemize}
+	\item Простой монитор;
+	\item Кольцевой монитор;
+	\item Монитор читатели-писатели.
+\end{itemize}
+
+\section{Простой монитор}
+Обеспечивает выделение ресурса произвольному числу процессов.
+Когда пр-с захватывает ресурс, вызывается acquire. 
+\begin{lstlisting}[label=lst:SimpleMonitor,caption=Код монитора]
+resource : monitor
+var
+	busy : logical
+	x    : conditional // event
+	
+procedure acquire
+begin
+	if busy then wait(x);
+	busy = true; // process get access to resource
+end
+
+procedure release
+begin
+	busy = false;
+	signal(x);
+end
+
+Begin
+	busy = false
+End.
+\end{lstlisting}
+
+\section{Кольцевой монитор}
+
+\section{Монитор читатели-писатели}
+Процессы писатели могут изменять данные, поэтому они должны работать  в режиме монопольного доступа к раздел. данным. Если писатель изм. анные, другие читатели/писатели не могут к ним обратиться.
+Процессы-читатели могут только читать данные. При этом они могут читать параллельно.
+Пример -- продажа билетов.
+
+\begin{lstlisting}[label=lst:RWMonitor,caption=Код монитора читатели-писатели]
+monitor : resource
+var
+	nr              : integer; // reader
+	wrt             : logical; // writer
+	c_read, c_write : condition;
+	
+procedure start_read
+begin
+	if wrt or turn(c_write) // active writer exists or there are waiting readers in queue
+		then wait(c_read);
+	inc(nr);
+	signal(c_read); // other readers in queue become active
+end;
+
+procedure stop_read
+begin
+	dec(nr);
+	if nr = 0 then // no readers => can write
+		signal(c_write);
+end;
+
+procedure start_write
+begin
+	if nr > 0 or wrt
+		then wait(c_write);
+	wrt = true;
+end;
+
+procedure stop_read
+begin
+	wrt = false;
+	if turn(c_read) // there are waiting readers in queue
+		signal(c_read);
+	else 
+		signal(c_write)
+end;
+
+Begin
+nr = 
+End.
+\end{lstlisting}
+
+Читатель начинает с вызова srart\_write и заканчивавает вызовом stop\_write. 
+Данный алгоритм предотвращает бесконечное откладывание.
+
+\section{Алгоритм-булочная (Бейкери-алгоритм)}
+Базируется на системе "Take a number".
+
+\chapter{Очереди сообщений}
+Было придумано ещё одно средство взаимодействия процессов, чтобы обеспечить разные потребности процессов. 
+
+Посылка и приём собщений - самый общий способ взаимодействия. В сетях специально упакованные сообщ. наз пакетами. В ядре есть таблица очередей сообщений.
+
+\begin{lstlisting}
+#include <sys/msg.h>
+struct msgid_ds;
+\end{lstlisting}
+
+\begin{itemize}
+	\item msgget;
+	\item msgcnt;
+	\item msgset;
+	\item msgrec; // recieve
+\end{itemize}
+
+При посылке сообщения оно копируется из адресного пр-ва процесса(пр-ва пользователя) в адресное пр-во ядра, при получении -- наоборот.
+msg\_spot - указатель на текст сообщения. 
+
+Когда пр-с помещает сообщение  в очередь, ядро созд. для него новую запись и помещает её в конец списка, соотв. сообщ. указанной очереди. В каждой такой записи указывается тип сообщения, число байт в сообщении и указатель на область данных ядра, в которой находится сообщение.
+
+Ядро коп. ... После этого пр-с, отправивший сообщ, может завершитья. (пр-с не должен блокироваться в ожидании получения сооб. другим процессом)
+Когда к-либо пр-с выбирает сообщ. из очереди, ядро коп. его в адр. пр-во процесса-получателя, после этого сообщ. удаляется из очереди.
+
+Способы выбора соощения.
+\begin{itemize}
+	\item Взять самое старое сообщ. (из головы очереди), независимо от его типа.
+	\item Если идентификатор сообщ. совпадает с идентификатором, который указал пр-с. Если сущ. несколько сообщ. с таким ид., берётся самое старое.
+	\item Пр-с может взять сообщени, числ. значение типа которого есть менше или равное значению типа, кот указал пр-с. Если этому условию соответствеют несколько сообщений, берётся самое старое. (см. диаграмму 3 состояния блокировки пр-са при передачи сообщ.)
+\end{itemize}
+
+Пример.
+\begin{lstlisting}
+#ifndef MSGMAX
+#define MSGMAX 1024
+#endif
+
+struct mbuf {
+long msgtype;
+char mtext[MSGMAX];
+} mobj = {15, "aaa"};
+
+int main() {
+	int fd = msgget(100, IPC_CREATE | IPC_EXCL | 0642);
+	if (fd == -1 || msgsnd(fd, &mobj, strlen(mobj.mtext), + 1, IPC_NOWAIT))
+		perror("message");
+	
+	return 0;
+}
+\end{lstlisting}
+
+\begin{itemize}
+	\item ;
+	\item ;
+\end{itemize}
+\chapter{Очереди сообщений}
